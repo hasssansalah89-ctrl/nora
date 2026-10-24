@@ -198,7 +198,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 <div class="page active" id="p1">
   <span class="txt-hello">hello there</span>
   <span class="txt-mylove">Nora!</span>
-  <span class="txt-question">Do you want to see your gift?</span>
+  <span class="txt-question">baghya tchoufi cadeau ta3k?</span>
   <div class="btn-row">
     <button id="btn-yes">YES PLEASE</button>
     <button id="btn-no">NO THANKS</button>
@@ -233,7 +233,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 <div class="page" id="p5">
   <canvas id="tree-canvas2" width="1100" height="680"></canvas>
   <div id="p5-side">
-    <p id="p5-label">let a msg for me: &#x270F;</p>
+    <p id="p5-label">khali msg 9bl mtkhji: &#x270F;</p>
     <textarea id="msg-input" placeholder="khalili msg hna!" maxlength="200"></textarea>
     <button id="btn-send">ENVOYER &#x2665;</button>
     <p id="msg-display"></p>
@@ -8965,10 +8965,10 @@ document.getElementById('btn-home').addEventListener('click', function(){
 
 // PAGE 2 : TYPEWRITER
 var lines = [
-  {text:'ouiii Noooraaa!',            type:'normal', delay:0},
+  {text:'salam noora !',            type:'normal', delay:0},
   {text:'',                      type:'normal', delay:400},
-  {text:'ma3labalich min nbda', type:'normal', delay:0},
-  {text:'ghadi nkon Honnête m3ak', type:'normal', delay:0},
+  {text:'j espere tkoni mliha', type:'normal', delay:0},
+  {text:'ni khdmltk hadi l3fsa lik brk', type:'normal', delay:0},
   {text:'deja',                      type:'normal', delay:300},
   {text:'Bonne anniersaire',       type:'big',    delay:200},
   {text:'',                      type:'normal', delay:400},
@@ -8983,8 +8983,8 @@ var lines = [
   {text:'ni drtlk hadi haja sghira bah nfrhk f anniversaire ta3k', type:'normal', delay:0},
   {text:'nchlh ta3jbk', type:'normal', delay:0},
   {text:'',                      type:'normal', delay:300},
-  {text:"rabi yfarhak w yha9l9 wsh raki baghya،", type:"big", delay:200},
-  {text:'w nchlh t93di kima 3raftk just fix few things w haja mtkhsk mn 3andi',                      type:'normal', delay:500},
+  {text:"rabi yfarhak w yshlk fi wsh raki baghya،", type:"big", delay:200},
+  {text:'w nchlh t93di kima 3raftk just fix few things w nchlh kolchi yfout ghaya',                      type:'normal', delay:500},
   {text:"Hassan",            type:'big red', delay:400},
   {text:'',                      type:'normal', delay:200},
   {text:'— Enjoy ur day ♥', type:'normal', delay:0}
@@ -9134,41 +9134,142 @@ function initFlowers(){
 
 // ═══ PAGE 3 — DATE DE NAISSANCE ═══
 var CORRECT_DATE = '27/10/2006';
+var flowerMessageTimer;
+
+var flowersPage = document.getElementById('p4');
+var flowerMessage = document.getElementById('flower-message');
+
+if (!flowerMessage) {
+  flowerMessage = document.createElement('div');
+  flowerMessage.id = 'flower-message';
+  flowersPage.appendChild(flowerMessage);
+}
+
+if (getComputedStyle(flowersPage).position === 'static') {
+  flowersPage.style.position = 'relative';
+}
+
+flowerMessage.style.cssText = `
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(24px, 5vw, 42px);
+  line-height: 1.5;
+  color: #ff69a0;
+  z-index: 100;
+  pointer-events: none;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+`;
+
+function typeFlowerMessage() {
+  clearTimeout(flowerMessageTimer);
+
+  // Reprend la police du texte « hello there »
+  var helloText = document.querySelector('.txt-hello');
+
+  if (helloText) {
+    var originalStyle = getComputedStyle(helloText);
+
+    flowerMessage.style.fontFamily = originalStyle.fontFamily;
+    flowerMessage.style.fontWeight = originalStyle.fontWeight;
+    flowerMessage.style.fontStyle = originalStyle.fontStyle;
+    flowerMessage.style.letterSpacing = originalStyle.letterSpacing;
+    flowerMessage.style.color = originalStyle.color;
+  }
+
+  var letters = Array.from(
+    'clique bah ykhrjolk flowers xD'
+  );
+  var index = 0;
+
+  flowerMessage.textContent = '';
+  flowerMessage.style.display = 'block';
+  flowerMessage.style.opacity = '0';
+
+  // Prépare l'apparition du message
+  void flowerMessage.offsetHeight;
+  flowerMessage.style.opacity = '1';
+
+  function typeNextLetter() {
+    if (index < letters.length) {
+      flowerMessage.textContent += letters[index];
+      index++;
+
+      flowerMessageTimer = setTimeout(typeNextLetter, 70);
+    } else {
+      // Laisse le message visible pendant 3 secondes
+      flowerMessageTimer = setTimeout(function() {
+        flowerMessage.style.opacity = '0';
+
+        flowerMessageTimer = setTimeout(function() {
+          flowerMessage.style.display = 'none';
+        }, 800);
+      }, 3000);
+    }
+  }
+
+  typeNextLetter();
+}
 
 function formatDateInput(val) {
-  var digits = val.replace(/\D/g,'');
+  var digits = val.replace(/\D/g, '');
   var out = '';
-  if(digits.length > 0) out += digits.substring(0,2);
-  if(digits.length >= 3) out += '/' + digits.substring(2,4);
-  if(digits.length >= 5) out += '/' + digits.substring(4,8);
+
+  if (digits.length > 0) {
+    out += digits.substring(0, 2);
+  }
+
+  if (digits.length >= 3) {
+    out += '/' + digits.substring(2, 4);
+  }
+
+  if (digits.length >= 5) {
+    out += '/' + digits.substring(4, 8);
+  }
+
   return out;
 }
 
-document.getElementById('date-input').addEventListener('input', function(){
+document.getElementById('date-input').addEventListener('input', function() {
   this.value = formatDateInput(this.value);
   document.getElementById('date-error').textContent = '';
 });
 
-document.getElementById('date-input').addEventListener('keydown', function(e){
-  if(e.key === 'Enter') document.getElementById('btn-date').click();
-});
-
-document.getElementById('btn-date').addEventListener('click', function(){
-  var val = document.getElementById('date-input').value.trim();
-  if(val === CORRECT_DATE) {
-    goTo('p3','p4');
-    setTimeout(function(){ startTree(); initFlowers(); }, 400);
-  } else {
-    document.getElementById('date-error').textContent = 'mauvaise date... essaie encore \u2715';
-    document.getElementById('date-input').value = '';
-    document.getElementById('date-input').focus();
-    var inp = document.getElementById('date-input');
-    inp.style.animation = 'none';
-    inp.offsetHeight;
-    inp.style.animation = 'shake .4s ease';
+document.getElementById('date-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    document.getElementById('btn-date').click();
   }
 });
 
+document.getElementById('btn-date').addEventListener('click', function() {
+  var val = document.getElementById('date-input').value.trim();
+
+  if (val === CORRECT_DATE) {
+    goTo('p3', 'p4');
+
+    setTimeout(function() {
+      startTree();
+      initFlowers();
+      typeFlowerMessage();
+    }, 400);
+  } else {
+    document.getElementById('date-error').textContent =
+      'mauvaise date... essaie encore \u2715';
+
+    var inp = document.getElementById('date-input');
+    inp.value = '';
+    inp.focus();
+    inp.style.animation = 'none';
+    void inp.offsetHeight;
+    inp.style.animation = 'shake .4s ease';
+  }
+});
 // ═══ PAGE 4 — ARBRE ═══
 var treeReady = false;
 function startTree(){
